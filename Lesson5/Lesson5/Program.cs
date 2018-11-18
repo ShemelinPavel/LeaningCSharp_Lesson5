@@ -14,6 +14,12 @@ namespace Lesson5
             private string firstname;
             private int[] grades;
 
+            /// <summary>
+            /// студент
+            /// </summary>
+            /// <param name="lastN">фамилия</param>
+            /// <param name="firstN">имя</param>
+            /// <param name="grArr">массив с оценками</param>
             public Student(string lastN, string firstN, int[] grArr)
             {
                 LastName = lastN;
@@ -40,9 +46,20 @@ namespace Lesson5
                 set { this.grades = value; }
             }
 
+            /// <summary>
+            /// средняя оценка
+            /// </summary>
+            /// <returns>значение средней оценки</returns>
             public double AverageGrade()
             {
-                return this.grades.Average();
+                if (this.grades == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return this.grades.Average();
+                }
             }
 
             #region реализация интерфейса IComparer
@@ -64,7 +81,7 @@ namespace Lesson5
             }
             #endregion реализация интерфейса IComparer
 
-            #region переопределяем Equals и GetHashCode для определения дублей
+            #region переопределяем Equals и GetHashCode для определения дублей - полные тезки, вам не повезло
             public override bool Equals(object obj)
             {
                 if(obj is Student && obj != null)
@@ -125,14 +142,12 @@ namespace Lesson5
             Student st6 = new Student("Петров4", "Иван", new int[] { 30, 60, 30 });
             lstSt.Add(st6, st6.AverageGrade());
 
-
-            IEnumerable<double> dist = lstSt.Values.ToArray().Distinct();
-            dist.OrderBy(i => i);
-            dist = dist.Take(countMinGrades);
+            //первые 3 (countMinGrades) значения средней оценки
+            IEnumerable<double> distinctMinGrades = lstSt.Values.ToArray().Distinct().OrderBy(i => i).Take(countMinGrades);
 
             foreach (KeyValuePair<Student, double> item in lstSt.OrderBy(key => key.Value))
             {
-                if (dist.Contains(item.Value))
+                if (distinctMinGrades.Contains(item.Value))
                 {
                     Console.WriteLine($"{item.Key} {item.Value}");
                 }
