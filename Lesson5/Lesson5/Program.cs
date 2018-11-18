@@ -65,7 +65,8 @@ namespace Lesson5
             #region реализация интерфейса IComparer
             public int Compare(object x, object y)
             {
-                try
+
+                if((x is Student && x != null) && (y is Student && y != null))
                 {
                     Student xStudent = (Student)x;
                     Student yStudent = (Student)y;
@@ -74,9 +75,9 @@ namespace Lesson5
 
                     return (string.Compare(xStudent.LastName + xStudent.FirstName, yStudent.LastName + yStudent.FirstName));
                 }
-                catch
+                else
                 {
-                    throw new NotImplementedException();
+                    throw new ArgumentException("Неверное значение аргументов функции");
                 }
             }
             #endregion реализация интерфейса IComparer
