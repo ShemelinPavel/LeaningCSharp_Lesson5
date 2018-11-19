@@ -1,12 +1,21 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using LeaningCSharp_ClassLibrary;
 
 namespace Lesson5
 {
-    class Program
+    public partial class Tasks
     {
+
+        //выход из программы
+        public static void Exit()
+        {
+            Environment.Exit(0);
+        }
+
         public class Student: IComparer
         {
 
@@ -62,7 +71,7 @@ namespace Lesson5
                 }
             }
 
-            #region реализация интерфейса IComparer
+            //реализация интерфейса IComparer
             public int Compare(object x, object y)
             {
 
@@ -80,7 +89,6 @@ namespace Lesson5
                     throw new ArgumentException("Неверное значение аргументов функции");
                 }
             }
-            #endregion реализация интерфейса IComparer
 
             #region переопределяем Equals и GetHashCode для определения дублей - полные тезки, вам не повезло
             public override bool Equals(object obj)
@@ -108,54 +116,84 @@ namespace Lesson5
             }
             #endregion переопределяем Equals и GetHashCode для определения дублей
 
-            #region переопредение представления объекта
+            //переопредение представления объекта
             public override string ToString()
             {
                 return $"{this.lastname} {this.firstname}";
             }
-            #endregion переопредение представления объекта
         }
 
-        static void Main(string[] args)
+        private static Student[] ReadStudentsFromFile(string filename)
         {
 
-            //количество разных значений оценок которые нужно вывести
-            const int countMinGrades = 3;
-
-            Dictionary<Student, double> lstSt = new Dictionary<Student, double>();
-
-            Student st1 = new Student("Иванов", "Иван", new int[]{ 3, 3, 3 });
-            lstSt.Add(st1, st1.AverageGrade());
-
-            Student st2 = new Student("Петров", "Иван", new int[] { 5, 2, 3 });
-            lstSt.Add(st2, st2.AverageGrade());
-
-            Student st5 = new Student("Петров1", "Иван", new int[] { 5, 2, 3 });
-            lstSt.Add(st5, st5.AverageGrade());
-
-
-            Student st3 = new Student("Петров2", "Иван", new int[] { 3, 3, 3 });
-            lstSt.Add(st3, st3.AverageGrade());
-
-            Student st4 = new Student("Петров3", "Иван", new int[] { 30, 60, 3 });
-            lstSt.Add(st4, st4.AverageGrade());
-
-            Student st6 = new Student("Петров4", "Иван", new int[] { 30, 60, 30 });
-            lstSt.Add(st6, st6.AverageGrade());
-
-            //первые 3 (countMinGrades) значения средней оценки
-            IEnumerable<double> distinctMinGrades = lstSt.Values.ToArray().Distinct().OrderBy(i => i).Take(countMinGrades);
-
-            foreach (KeyValuePair<Student, double> item in lstSt.OrderBy(key => key.Value))
+            if (!File.Exists(filename))
             {
-                if (distinctMinGrades.Contains(item.Value))
-                {
-                    Console.WriteLine($"{item.Key} {item.Value}");
-                }
-                else break; // список за пределами нужных значений дальше не интересует
+                ServingStaticClass.Print($"Файл: {filename} не существует!");
+                return null;
             }
 
-            Console.ReadKey();
+            string[] allStudentsTxt = File.ReadAllLines(filename);
+
+            Student[] students = new Student[allStudentsTxt.Length];
+
+            for (int i = 0; i < allStudentsTxt.Length; i++)
+            {
+
+                int[] arrayGrades;
+
+                string[] currentStudentData = allStudentsTxt[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (currentStudentData.Length > 2)
+                {
+                    ushort counter = 0;
+                    arrayGrades = new int[currentStudentData.Length - 2];
+                    for (int countGrades = 2; countGrades < currentStudentData.Length - 1; countGrades++)
+                    {
+                        arrayGrades[counter] = Int32.Parse(currentStudentData[countGrades]);
+                        counter++;
+                    }
+                }
+                else
+                {
+                    arrayGrades = new int[] { 0 };
+                }
+                students[i] = new Student(currentStudentData[0], currentStudentData[1], arrayGrades);
+            }
+            return students;
+        }
+
+        public static void Task4()
+        {
+
+            string path = ServingStaticClass.MakeQuestion("имя файла с оценками студентов");
+
+            Student[] students = ReadStudentsFromFile(path);
+
+            if(students != null)
+            {
+                //количество разных значений оценок которые нужно вывести
+                const int countMinGrades = 3;
+
+                Dictionary<Student, double> listStudents = new Dictionary<Student, double>();
+
+                foreach (Student item in students)
+                {
+                    listStudents.Add(item, item.AverageGrade());
+                }
+
+                //первые 3 (countMinGrades) значения средней оценки
+                IEnumerable<double> distinctMinGrades = listStudents.Values.ToArray().Distinct().OrderBy(i => i).Take(countMinGrades);
+
+                foreach (KeyValuePair<Student, double> item in listStudents.OrderBy(key => key.Value))
+                {
+                    if (distinctMinGrades.Contains(item.Value))
+                    {
+                        Console.WriteLine($"{item.Key} {item.Value}");
+                    }
+                    else break; // список за пределами нужных значений дальше не интересует
+                }
+                ServingStaticClass.Pause("");
+            }
         }
     }
 }
