@@ -76,7 +76,7 @@ namespace Lesson5
             }
             else
             {
-                ServingStaticClass.Print($"Предложенный пароль не подходит.\nОписание ошибки: {errorMessage}\n");
+                ServingStaticClass.Print($"Предложенный пароль не подходит.\nОписание ошибки: {errorMessage}");
             }
 
             //регулярки
