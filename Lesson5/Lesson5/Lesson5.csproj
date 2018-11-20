@@ -36,8 +36,12 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exit.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Task1.cs" />
+    <Compile Include="Task2.cs" />
     <Compile Include="Task4.cs" />
+    <Compile Include="Task5.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

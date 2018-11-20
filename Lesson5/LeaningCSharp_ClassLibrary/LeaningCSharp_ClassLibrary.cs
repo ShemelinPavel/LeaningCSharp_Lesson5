@@ -77,10 +77,8 @@ namespace LeaningCSharp_ClassLibrary
         /// <param name="textMessage"></param>
         public static void PrintTaskWelcomeScreen(string textMessage = "")
         {
-
             ClearScreen();
             Print(textMessage);
-
         }
 
     }
@@ -117,7 +115,6 @@ namespace LeaningCSharp_ClassLibrary
 
         private void CreateMenuItems(string[] items)
         {
-
             if (items.Length > 9) throw new ArgumentException("Пунктов меню не может быть больше 9-ти !");
 
             this.menuitems = new Dictionary<ConsoleKey, string[]>();
@@ -129,56 +126,58 @@ namespace LeaningCSharp_ClassLibrary
                 counter++;
                 switch (counter)
                 {
-                    //описание массива: преставление пункта меню / вызываемый метод / видимость при выводе пунктов меню в консоль (чтобы не дублировалось)
+                    //если item == "*" - это заглушка для пустого пункта
+                    //описание массива Value: преставление пункта меню / вызываемый метод / видимость при выводе пунктов меню в консоль (чтобы не дублировалось)
+
                     case 1:
-                        this.menuitems.Add(ConsoleKey.D1, new string[] { "1 - " + item, "Task1", "true" });
+                        this.menuitems.Add(ConsoleKey.D1, new string[] { "1 - " + item, "Task1", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad1, new string[] { "1 - " + item, "Task1", "false" });
                         break;
 
                     case 2:
-                        this.menuitems.Add(ConsoleKey.D2, new string[] { "2 - " + item, "Task2", "true" });
+                        this.menuitems.Add(ConsoleKey.D2, new string[] { "2 - " + item, "Task2", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad2, new string[] { "2 - " + item, "Task2", "false" });
                         break;
 
                     case 3:
-                        this.menuitems.Add(ConsoleKey.D3, new string[] { "3 - " + item, "Task3", "true" });
+                        this.menuitems.Add(ConsoleKey.D3, new string[] { "3 - " + item, "Task3", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad3, new string[] { "3 - " + item, "Task3", "false" });
                         break;
 
                     case 4:
-                        this.menuitems.Add(ConsoleKey.D4, new string[] { "4 - " + item, "Task4", "true" });
+                        this.menuitems.Add(ConsoleKey.D4, new string[] { "4 - " + item, "Task4", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad4, new string[] { "4 - " + item, "Task4", "false" });
                         break;
 
                     case 5:
-                        this.menuitems.Add(ConsoleKey.D5, new string[] { "5 - " + item, "Task5", "true" });
+                        this.menuitems.Add(ConsoleKey.D5, new string[] { "5 - " + item, "Task5", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad5, new string[] { "5 - " + item, "Task5", "false" });
                         break;
 
                     case 6:
-                        this.menuitems.Add(ConsoleKey.D6, new string[] { "6 - " + item, "Task6", "true" });
+                        this.menuitems.Add(ConsoleKey.D6, new string[] { "6 - " + item, "Task6", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad6, new string[] { "6 - " + item, "Task6", "false" });
                         break;
 
                     case 7:
-                        this.menuitems.Add(ConsoleKey.D7, new string[] { "7 - " + item, "Task7", "true" });
+                        this.menuitems.Add(ConsoleKey.D7, new string[] { "7 - " + item, "Task7", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad7, new string[] { "7 - " + item, "Task7", "false" });
                         break;
 
                     case 8:
-                        this.menuitems.Add(ConsoleKey.D8, new string[] { "8 - " + item, "Task8", "true" });
+                        this.menuitems.Add(ConsoleKey.D8, new string[] { "8 - " + item, "Task8", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad8, new string[] { "8 - " + item, "Task8", "false" });
                         break;
 
                     case 9:
-                        this.menuitems.Add(ConsoleKey.D9, new string[] { "9 - " + item, "Task9", "true" });
+                        this.menuitems.Add(ConsoleKey.D9, new string[] { "9 - " + item, "Task9", (item == "*") ? "false" : "true" });
                         this.menuitems.Add(ConsoleKey.NumPad9, new string[] { "9 - " + item, "Task9", "false" });
                         break;
                 }
             }
             //обязательный пункт
-            this.menuitems.Add(ConsoleKey.D0, new string[] { "0 - выход из программы", "Exit", "true" });
-            this.menuitems.Add(ConsoleKey.NumPad0, new string[] { "0 - выход из программы", "Exit", "false" });
+            this.menuitems.Add(ConsoleKey.D0, new string[] { "0 - Выход из программы", "Exit", "true" });
+            this.menuitems.Add(ConsoleKey.NumPad0, new string[] { "0 - Выход из программы", "Exit", "false" });
         }
 
         public Dictionary<ConsoleKey, string[]> MenuItems
@@ -206,13 +205,13 @@ namespace LeaningCSharp_ClassLibrary
                     }
                     catch
                     {
-                        ServingStaticClass.Print($"\nОшибка вызова метода: {menuItem[1]}");
+                        //ServingStaticClass.Print($"\nОшибка вызова метода: {menuItem[1]}");
                         return false;
                     }
                 }
                 else
                 {
-                    ServingStaticClass.Print($"\nМетод: {menuItem[1]} не обнаружен!");
+                    //ServingStaticClass.Print($"\nМетод: {menuItem[1]} не обнаружен!");
                     return false;
                 }
             }
