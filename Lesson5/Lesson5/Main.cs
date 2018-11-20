@@ -1,30 +1,27 @@
 ﻿using System;
 using LeaningCSharp_ClassLibrary;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Lesson5
 {
     class Lesson5
     {
-
         static void Main(string[] args)
         {
-
+            //задачи собраны в отдельный класс
             Tasks tasks = new Tasks();
 
-            MainMenu menu = new MainMenu(new string[] { "задача1", "задача2" });
+            MainMenu menu = new MainMenu(new string[] { "Создание файла из символов", "Проверка пароля", "*", "Проверка строки", "Задача ЕГЭ" });
 
             menu.Show();
 
             while (true)
             {
                 ConsoleKeyInfo userChooseKey = Console.ReadKey(true);
-                menu.GotoTask(tasks, userChooseKey.Key);
+                bool resulTaskCall = menu.GotoTask(tasks, userChooseKey.Key);
+
+                menu.Show();
 
             }
-
         }
     }
 }
